@@ -1,6 +1,10 @@
 package revoltgo
 
-import "time"
+import (
+	"time"
+
+	"github.com/goccy/go-json"
+)
 
 //go:generate msgp -tests=false -io=false
 
@@ -113,6 +117,23 @@ type MessageEmbed struct {
 	SiteName    string               `msg:"site_name" json:"site_name,omitempty"`
 	IconURL     string               `msg:"icon_url" json:"icon_url,omitempty"`
 	Colour      string               `msg:"colour" json:"colour,omitempty"`
+	Media       *EmbedMedia          `msg:"media" json:"media,omitempty"`
+}
+
+type EmbedMedia struct {
+	MessageEmbedMedia
+}
+
+func (e EmbedMedia) MarshalJSON() ([]byte, error) {
+	return json.Marshal(e.ID)
+}
+
+type MessageEmbedMedia struct {
+	ID          string `json:"_id,omitempty"`
+	Tag         string `json:"tag,omitempty"`
+	Filename    string `json:"filename,omitempty"`
+	ContentType string `json:"content_type,omitempty"`
+	Size        int    `json:"size,omitempty"`
 }
 
 type MessageEmbedSpecial struct {
